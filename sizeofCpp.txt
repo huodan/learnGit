@@ -1,0 +1,70 @@
+数据类型的sizeof():*(unsigned影响的只是最高位bit的意义，数据长度不会被改变的。) 
+
+char, 1;
+short int(short), 2;
+int, 4;
+long int(long), 4;
+float, 4;
+double, 8;
+long double, 10;
+【数组的大小】是各维数的乘积*数组元素的大小。 
+
+第一：空类的大小
+class CBase
+{
+};
+//sizeof(CBase)=1；
+//类的实例化，所谓类的实例化就是在内存中分配一块地址，每个实例在内存中都有独一无二的地址。同样空类也会被实例化（别拿豆包不当干粮，空类也是类啊），所以编译器会给空类隐含的添加一个字节，这样空类实例化之后就有了独一无二的地址了。所以空类的sizeof为1。
+
+第二：一般非空类大小
+class CBase
+{
+    int  a;//sizeof(int) = 4
+    char *p;//sizeof(pointer) = 4, 不管是什么类型的指针，大小都是4的，因为指针就是32位的物理地址。 
+
+};
+//sizeof(CBase)=8
+
+第三：有虚函数类
+class CBase
+{
+public:
+    CBase(void);
+    virtual ~CBase(void);//4
+private:
+    int   a;//4
+    char *p;//4
+};
+//sizeof(CBase)=12,“C++ 类中有虚函数的时候有一个指向虚函数的指针（vptr），在32位系统分配指针大小为4字节,在64位系统分配指针大小为8字节”。
+
+第四步：有虚函数类的继承
+class Child : public CBase
+{
+public:
+    CChild(void);
+    ~CChild(void);
+private:
+    int b;//4
+};
+//sizeof(CChild)=16；可见子类的大小是本身成员变量的大小加上子类的大小。
+
+3.静态数据成员
+class A
+{
+    int a;//4
+    static int b;
+    virtual void FuncA();//4
+};
+// 得到结果：8
+静态数据成员被编译器放在程序的一个global data members中，它是类的一个数据成员．但是它不影响类的大小，不管这个类实际产生了多少实例，还是派生了多少新的类，静态成员数据在类中永远只有一个实体存在。
+
+而类的非静态数据成员只有被实例化的时候，他们才存在．但是类的静态数据成员一旦被声明，无论类是否被实例化，它都已存在．可以这么说，类的静态数据成员是一种特殊的全局变量．
+所以该类的size为：int a型4字节加上虚函数表指针4字节，等于8字节。
+
+4.普通成员函数
+class A
+{
+     void FuncA();
+};
+// 结果：1
+类的大小与它的构造函数、析构函数和其他成员函数无关，只已它的数据成员有关。
