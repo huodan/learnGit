@@ -1,6 +1,6 @@
 import java.util.Scanner;  
   
-//最短寻道时间优先  
+//最短寻道时间优先，(ShortestSeekTimeFirst）  
 //该算法要求访问的磁道与当前磁头所在的磁道距离最近，以使每次的寻道时间最短
 public class SSTF {  
   
