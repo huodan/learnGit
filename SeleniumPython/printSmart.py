@@ -1,0 +1,1 @@
+print("Huo Dan is very smart!")
